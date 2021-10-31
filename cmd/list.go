@@ -16,7 +16,7 @@ var listCmd = &cobra.Command{
 		tasks, err := db.GetTasks()
 
 		if err != nil {
-			fmt.Println("Something went wrong:", err.Error())
+			fmt.Println("Something went wrong:", err)
 			os.Exit(1)
 		}
 
@@ -26,11 +26,11 @@ var listCmd = &cobra.Command{
 			return
 		}
 
-		// // Print all tasks
-		// fmt.Println("You have the following tasks: ")
-		// for i, task := range tasks {
-		// 	fmt.Printf("%d. %s \n", i+1 ,task.Value)
-		// }
+		// Print all tasks
+		fmt.Println("You have the following tasks: ")
+		for i, task := range tasks {
+			fmt.Printf("%d. %s \n", i+1 ,task.Value)
+		}
 		
 	},
 }
