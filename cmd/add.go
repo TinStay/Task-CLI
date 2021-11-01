@@ -19,7 +19,7 @@ var addCmd = &cobra.Command{
 		_, err := db.CreateTask(task)
 
 		if err != nil {
-			fmt.Println("Something went wrong:", err.Error())
+			fmt.Println("Something went wrong:", err)
 			return
 		}
 		

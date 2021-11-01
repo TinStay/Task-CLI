@@ -67,7 +67,7 @@ func GetTasks()([]Task, error){
 		c := b.Cursor()
 
 		// Read and store all key value pairs
-		for k, v := c.First(); k != nil; c.Next(){
+		for k, v := c.First(); k != nil; k, v = c.Next(){
 			tasks = append(tasks, Task{
 				Key: btoi(k),
 				Value: string(v),

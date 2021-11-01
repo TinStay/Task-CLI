@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/Basics/src/github.com/TinStay/Task/db"
 	"github.com/spf13/cobra"
 )
 
@@ -21,10 +22,34 @@ var doCmd = &cobra.Command{
 				ids = append(ids, id)
 			}
 		}
-		if(len(ids) > 1){
-			fmt.Printf("Tasks \"%v\" are marked as completed", ids)
-		}else{
-			fmt.Printf("Tasks \"%v\" is marked as completed", ids)
+		// Fetch tasks from database
+		tasks, err := db.GetTasks()
+
+		if err != nil {
+			fmt.Println("Something went wrong:", err)
+			return
+		}
+
+		for _, id := range ids {
+			// Check if an invalid task is typed
+			if id <= 0 || id > len(tasks){
+				fmt.Println("Invalid task number: ", id)
+				continue
+			}
+
+			// Get task from input
+			task := tasks[id-1]
+
+			// Delete task
+			err := db.DeleteTask(task.Key)
+
+			// Print message to user
+			if err != nil {
+				fmt.Printf("Failed to mark  \"%d\" as completed. Error: %s\n", id, err)
+			}else {
+				fmt.Printf("Marked \"%d\" as completed\n", id)
+			}
+
 		}
 
 	},
@@ -32,14 +57,4 @@ var doCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(doCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// doCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// doCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
