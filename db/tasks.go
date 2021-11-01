@@ -44,7 +44,7 @@ func CreateTask(task string)(int, error){
 		id = int(id64)
 
 		// Convert id to binary
-		key := itob(int(id))
+		key := itob(id)
 
 		// Update database bucket
 		return b.Put(key, []byte(task))
